@@ -3,7 +3,7 @@
 pipeline {
 	agent {
 		docker {
-			image 'docker:20.10.8'  // Usa la imagen Docker para el pipeline
+			image 'my-jenkins-image'  // Usa la imagen Docker para el pipeline
 			args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
 			// Permite el acceso al Docker daemon del host
 		}
