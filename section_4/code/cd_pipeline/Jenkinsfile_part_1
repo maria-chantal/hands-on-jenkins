@@ -14,7 +14,14 @@ pipeline {
 	}
 
 	stages {
-
+		stage('Test Docker') {
+			steps {
+				script {
+					sh 'docker --version'
+					sh 'docker ps'
+				}
+			}
+		}
 		stage("Build") {
 			steps { buildApp() }
 		}
