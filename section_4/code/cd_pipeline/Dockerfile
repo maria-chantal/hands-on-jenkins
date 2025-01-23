@@ -1,6 +1,15 @@
 # base image
 FROM alpine:3.18
 
+# Instalar dependencias necesarias
+RUN apk update && apk add --no-cache \
+    python3 \
+    py3-pip \
+    docker \
+    bash \
+    groupadd \
+    && rm -rf /var/cache/apk/* \
+
 # add user jenkins
 RUN useradd -d "$JENKINS_HOME" -u 102 -m -s /bin/bash jenkins
 
