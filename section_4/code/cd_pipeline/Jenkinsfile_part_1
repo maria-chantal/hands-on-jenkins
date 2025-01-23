@@ -10,14 +10,7 @@ pipeline {
     }
 
     stages {
-		stage('Run Docker') {
-			steps {
-				script {
-					sh 'echo "Running inside Docker container"'
-					sh 'docker --version'
-				}
-			}
-		}
+
         stage("Build") {
             steps { buildApp() }
 		}
