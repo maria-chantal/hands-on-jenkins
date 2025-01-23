@@ -1,14 +1,23 @@
 #!/usr/bin/groovy
 
 pipeline {
-    agent any
+	docker {
+		image 'alpine:3.18'
+	}
 
     options {
         disableConcurrentBuilds()
     }
 
     stages {
-
+		stage('Run Docker') {
+			steps {
+				script {
+					sh 'echo "Running inside Docker container"'
+					sh 'docker --version'
+				}
+			}
+		}
         stage("Build") {
             steps { buildApp() }
 		}
