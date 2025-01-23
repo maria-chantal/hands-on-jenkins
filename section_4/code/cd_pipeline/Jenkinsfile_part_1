@@ -1,9 +1,10 @@
 #!/usr/bin/groovy
 
 pipeline {
-	docker {
-		image 'alpine:3.18'
-	}
+    agent {
+		docker {
+			image 'alpine:3.18'
+		}
 
     options {
         disableConcurrentBuilds()
