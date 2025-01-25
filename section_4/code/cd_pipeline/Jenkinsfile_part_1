@@ -1,34 +1,22 @@
 #!/usr/bin/groovy
 
 pipeline {
-	agent {
-		docker {
-			image 'my-jenkins-image'  // Usa la imagen Docker para el pipeline
-			args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-			// Permite el acceso al Docker daemon del host
-		}
-	}
+    agent any
 
-	options {
-		disableConcurrentBuilds()
-	}
+    options {
+        disableConcurrentBuilds()
+    }
 
-	stages {
-		stage('Test Docker') {
-			steps {
-				script {
-					sh 'docker --version'
-					sh 'docker ps'
-				}
-			}
-		}
-		stage("Build") {
-			steps { buildApp() }
+    stages {
+
+        stage("Build") {
+            steps { buildApp() }
 		}
 
-		stage("Deploy - Dev") {
-			steps { deploy('dev') }
+        stage("Deploy - Dev") {
+            steps { deploy('dev') }
 		}
+
 	}
 }
 
@@ -36,7 +24,7 @@ pipeline {
 // steps
 def buildApp() {
 	dir ('section_4/code/cd_pipeline' ) {
-		def appImage = docker.build("my-jenkins-image:${BUILD_NUMBER}")
+		def appImage = docker.build("hands-on-jenkins/myapp:${BUILD_NUMBER}")
 	}
 }
 
@@ -48,7 +36,7 @@ def deploy(environment) {
 	if ("${environment}" == 'dev') {
 		containerName = "app_dev"
 		port = "8888"
-	}
+	} 
 	else {
 		println "Environment not valid"
 		System.exit(0)
@@ -56,7 +44,6 @@ def deploy(environment) {
 
 	sh "docker ps -f name=${containerName} -q | xargs --no-run-if-empty docker stop"
 	sh "docker ps -a -f name=${containerName} -q | xargs -r docker rm"
-	sh "docker run -d -p ${port}:5000 --name ${containerName} my-jenkins-image:${BUILD_NUMBER}"
+	sh "docker run -d -p ${port}:5000 --name ${containerName} hands-on-jenkins/myapp:${BUILD_NUMBER}"
 
 }
-
