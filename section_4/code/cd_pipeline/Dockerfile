@@ -8,7 +8,7 @@ RUN apk add --update python3
 COPY requirements.txt /usr/src/app/
 RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir -r /usr/src/app/requirements.txt
-
+RUN curl -fsSL https://get.docker.com | sh
 # Copy files required for the app to run
 COPY app.py /usr/src/app/
 COPY templates/index.html /usr/src/app/templates/
